@@ -3,7 +3,9 @@
 # Dr. Ezequiel López
 # Dr. Byron González
 # http://cete.fausac.gt
-# Con base en el texto de 
+# Este material es una traducción libre con base en el texto  
+# Ecology and Epidemiology in R: Disease Progress Over Time
+# https://www.apsnet.org/edcenter/disimpactmngmnt/topc/EcologyAndEpidemiologyInR/DiseaseProgress/Pages/default.aspx
 
 
 ## Configure el vector para el gráfico de AUDPC, de la localidad de Madras 

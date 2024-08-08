@@ -3,160 +3,117 @@
 # Dr. Ezequiel López
 # Dr. Byron González
 # http://cete.fausac.gt
-# Con base en el texto de 
+# Este material es una traducción libre con base en el texto  
+# Ecology and Epidemiology in R: Disease Progress Over Time
+# https://www.apsnet.org/edcenter/disimpactmngmnt/topc/EcologyAndEpidemiologyInR/DiseaseProgress/Pages/default.aspx
 
-# Configure las mediciones del porcentaje de severidad de la enfermedad; 
-# puede cambiarlos en análisis posteriores para ver cómo afecta
-#el AUDPC
-ds0<-1
-ds1<-2
-ds2<-7
-ds3<-7.5
 
-#Coloque estos valores en un vector sin realizar algún cambio
-disease.severity<-c(ds0,ds1,ds2,ds3)
+## Configure el vector de datos de población de nematodos
 
-#Puntos temporales en los que se harán mediciones 
-#de la severidad de la enfermedad, 
-#cámbielos en los análisis posteriores
-#vea cómo afecta al valor de AUDPC
-t0<-0
-t1<-2
-t2<-5
-t3<-6
-##Coloque el período de tiempo en un vector
-##No cambie esos valores
+npop <- c(220,180,150,250,270,300,500,580,580,1000,380,100)
 
-time.period<-c(t0,t1,t2,t3)
+## Configure el vector de caracteres relacionado con los meses del año
 
-# Refresque su memoria sobre cómo funciona la función de trazado
+names(npop) <-c (
+  "En",
+  "Feb",
+  "Mar",
+  "Abr",
+  "May",
+  "Jun",
+  "Jul",
+  "Agt",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dic"
+)
 
-help(plot)
-
-#Ahora genere la gráfica de la curva de la severidad de la enfermedad bajo el #tiempo
+## Configure el gráfico de barras de las poblaciones de nematodos, 
+#utilice help(barplot) para más información
 
 windows(10,10)
+barplot(
+  npop,
+  axes=FALSE,
+  main="Población de nematodos",
+  ylim=c(0,1200),
+  col="orange",
+  xlab="Mes",
+  ylab="Nematodos por 100 cc suelo")
+axis(2,seq(0,1200,by=200)
+)
 
-plot(time.period,
-     disease.severity,
-     ylim=c(0,(ds3+1)),
-     xlim=c(0,(t3+0.5)),
-     xlab="Tiempo",
-     ylab="Severidad de la enfermedad (%)",
-     type="o",
-     pch=19,
-     col="mediumblue")
+## Configure el nuevo gráfico que se dibujará encima del gráfico de barras, 
+#utilice help(par) para más información
+par(new=T)
 
-#Agregue el título y subtítulo al gráfico (main= título principal)
+# Esto establece la temperatura media mensual
+# Para la línea por encima de la población
 
-title(main="Ilustración del cálculo del AUDPC",
-      sub="Figura 1")
+y <-c (15,17,20,24,26,28,30,31,30,28,19,16)
 
-#Agregue el texto a las etiquetas de x definiendo los períodos de tiempo
-#definidos en el texto
+# Esto posiciona los puntos en el eje X
+# Correctamente en el medio sobre la parte superior del gráfico de barras..
 
-mtext("=t0",1,at=0.3,1)
-mtext("=t1",1,at=2.3,1)
-mtext("=t2",1,at=5.3,1)
-mtext("=t3",1,at=6.3,1)
+y2 <-c (0.5,1.45,2.45,3.5,4.5,5.35,6.5,7.6,8.5,9.55,10.65,11.5)
 
-#Illustre el área bajo el progreso de la enfermedad 
-#la curva con rectangulos.
+plot(
+  y2,
+  y,
+  ylim=c(0,35),
+  xlab=NA,
+  ylab=NA,
+  xlim=c(0,12),
+  axes=FALSE,
+  type="o",
+  pch=22,
+  col="mediumblue"
+)
 
-## No cambie esos valores
+axis(
+  4,
+  seq(0,35,by=5),
+  labels=FALSE
+)
 
-rect(t0,0,t1,((ds0+ds1)/2),border="orange")
+## Establezca los puntos para la temperatura
 
-#Agregue texto al rectángulo para describirlo
+points(
+  y2,
+  y,
+  pch=22,
+  col="mediumblue"
+)
 
-text(1,1,"A1")
+## Etiquete el eje derecho, consulte help(mtext) para obtener más información
 
-#Agregue segmento al eje Y 
-#Y así sucesivamente
+mtext(
+  c("0C","5C","10C","15C","20C","25C","30C","35C"),
+  4,
+  at=seq(0,35,by=5),
+  line=.25
+)
 
-rect(t1,0,t2,((ds1+ds2)/2),border="orange")
-text(((t1+t2)/2),(((ds1+ds2)/2)/2),"S2")
+## Etiquete el eje derecho, consulte help(mtext) para obtener más información
 
-#Dibuje la línea en el eje X y etiquétela con el valor
+mtext(
+  "Temperatura promedio del suelo",
+  4,
+  line=1,
+  cex=1
+)
 
-segments(.4,((ds1+ds2)/2),t2,((ds1+ds2)/2),
-         col="black",lty="18")
-text(0,((ds1+ds2)/2),((ds1+ds2)/2))
-rect(t2,0,t3,((ds2+ds3)/2),border="orange")
-text(((t2+t3)/2),(((ds2+ds3)/2)/2),"S3")
-segments(0.4,((ds2+ds3)/2),t2,((ds2+ds3)/2),
-         col="black",lty="18")
-text(0,((ds2+ds3)/2),((ds2+ds3)/2))
+## Debe crear la leyenda
+legend(
+  "topleft",
+  c("Temperatura del suelo","Población de nematodos"),
+  pch=c(22,NA),
+  lty=c(1,NA),
+  col=c("mediumblue",NA),
+  inset=0.01
+)
+## Cree un rectángulo naranja junto a la etiqueta 
+## Población de nematodos para la leyenda
 
-#Construya una función para calcular el AUDPC
-#El corchete izquierdo indica el comienzo de la función
-
-audpc <- function(disease.severity,time.period){
-  
-  #n es el tamaño del período de tiempo, o
-  #el número total de muestras
-  
-  n <- length(time.period)
-  
-  #meanvec es el vector (matriz de una dimensión)
-  #que contendrá la media del porcentaje de infección
-  # Se inicializa conteniendo -1 para todas las entradas
-  # Este tipo de inicialización es a veces útil
-  #para depurar
-  
-  meanvec <- matrix(-1,(n-1))
-  
-  #intvec es el vector que contendrá el tamaño del
-  #tiempo entre fechas de muestreo
-  
-  intvec <- matrix(-1,(n-1))
-  
-  # El bucle (proceso que se repite indefinidamente) va de la primera a la #penúltima entrada 
-  # El corchete izquierdo indica el comienzo de
-  #los comandos en el bucle
-  
-  for(i in 1:(n-1)){
-    
-    #la entrada ith en meanvec es reemplazada por el
-    #porcentaje promedio de la infección
-    #entre la muestra del tiempo i y la muestra del tiempo i+1
-    
-    meanvec[i] <- mean(c(disease.severity[i],
-                         disease.severity[i+1]))
-    
-    # La entrada i-ésima en intvec se sustituye por la longitud (tamaño del #vector)del intervalo de tiempo entre el tiempo i y el tiempo i+1
-    
-    intvec[i] <- time.period[i+1] - time.period[i]
-    
-    # El corchete derecho termina el bucle
-  }
-  
-  # Los dos vectores se multiplican juntos
-  # Una entrada a la vez
-  
-  infprod <- meanvec * intvec
-  
-  #la suma de las entradas en el vector resultante
-  #proporcionar el AUDPC
-  
-  sum(infprod)
-  
-  # El corchete derecho finaliza la función
-}
-
-
-# Ahora aplique la función a los datos de ejemplo y ponga
-# el resultado en un nuevo objeto llamado 'AUDPCexample'
-
-audpc(disease.severity,time.period) -> AUDPCexample
-
-#Despliegue el valor del AUDPC 
-#Dibuje el rectángulo en torno al valor
-
-rect(0.1,(ds3+.3),2,(ds3+1),border="black")
-
-#Texto AUDPC 
-
-text(1.05,(ds3+0.8),"AUDPC")
-text(1.05,(ds3+0.5),AUDPCexample)
-
+rect(-0.2,32.4,0.4,33.4,col="orange")
